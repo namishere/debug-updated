@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+    <name>An Updated Debugging Tool</name>
+    <directory>debug</directory>
+    <id>2836788641</id>
+    <description>A really useful debugging tool created by Alphius [url=https://steamcommunity.com/sharedfiles/filedetails/?id=942078486]a while ago[/url], updated just now by me.
+All the following features can be activated/deactivated from the in-game console. Just enable this mod when you want to debug, and disable it when you want to play.
+
+Here's what it does:
+
+- spawns all modded items and trinkets at the beginning of a new run.
+- debugs basic game stuff (curses, last damage source and flag, current room id...)
+
+- debugs type.variant.subtype of every entity.
+- debugs spawner of every entity.
+
+- debugs health, npcState, I1/I2, and V1/V2 of enemies and bosses.
+
+- shows a list of all sounds played in a room.
+
+Here's a lit of the commands:
+- &quot;moddebug help&quot;: shows a list of all the commands
+- &quot;moddebug spawnitems&quot;: Toggles modded items spawning on/off
+- &quot;moddebug spawntrinkets&quot;: Toggles modded trinket spawning on/off
+- &quot;moddebug gameinfo&quot;: Toggles game info debugging on/off
+- &quot;moddebug sfx&quot;: Toggles sfx debugging on/off
+- &quot;moddebug enemies&quot;: Toggles enemy debugging on/off
+- &quot;moddebug bosses&quot;: Toggles boss debugging on/off
+- &quot;moddebug pickups&quot;: Toggles pickup debugging on/off
+- &quot;moddebug items&quot;: Toggles item debugging on/off
+- &quot;moddebug all&quot;: Toggles all entities debugging on/off
+- &quot;moddebug ivalues&quot;: Toggles enemy I1/I2 variable debugging
+- &quot;moddebug vectors&quot;: Toggles enemy V1/V2 vector debugging</description>
+    <version>1.8</version>
+    <visibility>Public</visibility>
+    <tag id="Lua"/>
+</metadata>

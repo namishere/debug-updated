@@ -1,7 +1,7 @@
 local DEBUG = DebugTool
 
 DEBUG.enums.stateList = {"init", "appear", "appear custom", "idle", "move", "suicide", "jump", "stomp", "attack",
-	"attack2", "attack3", "attack4", "summon", "summon2", "summon3", "special", "unique death", "death", "cool death"}
+	"attack2", "attack3", "attack4", "summon", "summon2", "summon3", "special", "unique death", "death"}
 
 DEBUG.enums.damageFlagList = {"no kill", "fire", "explosion", "laser", "acid", "red hearts", "countdown", "spikes", "clones", "poop", "devil",
 	"isaac's' heart", "tnt", "invincible", "spawn fly", "poison burn", "cursed door", "timer", "IV bag", "pitfall", "chest", "fake", "booger", "spawn black heart", "crush", "no modifiers", "spawn red heart", "spawn coin", "no pentalties", "spawn temp heart", "ignore armor", "spawn card", "spawn rune"}

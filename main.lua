@@ -170,49 +170,102 @@ local function DebugAnything(entity, pos)
 	end
 end
 
-local function DebugEnemy(enemy, pos)
-	local text = nil
-	local buffer = nil
-	local spawnertext = true
-	local y = pos.Y - 57
-	-- render health
-	text = "" .. math.floor(enemy.HitPoints*10)/10 .. "/" .. math.floor(enemy.MaxHitPoints*10)/10
-	DrawText(text, pos.X, y, 0.5, 0.5, 255, 255, 0, 255, widthDefault, true)
-	y = y + 5
-	-- render state
-	buffer = DebugTool.enums.stateList[enemy:ToNPC().State+1]
-	if type(buffer) == "nil" then buffer = tostring(enemy:ToNPC().State) end
-	text = "" .. buffer
-	DrawText(text, pos.X, y, 0.5, 0.5, 0, 255, 255, 255, widthDefault, true)
-	y = y + 5
-	-- render type.variant.subtype
-	text = "" .. enemy.Type .. "." .. enemy.Variant .. "." .. enemy.SubType
-	DrawText(text, pos.X, y, 0.5, 0.5, 255, 255, 255, 255, widthDefault, true)
-	y = y + 5
-	-- render spawner
-	text = "spawner: " .. enemy.SpawnerType .. "." .. enemy.SpawnerVariant
-	if (text ~= "spawner: 0.0") then
-		DrawText(text, pos.X, y, 0.5, 0.5, 255, 255, 255, 255, widthDefault, true)
-		y = y + 5
-	end
-	if DebugTool.config.testIVars then
-		text = "I1: " .. dump(enemy.I1) .. "   I2: " .. dump(enemy.I2)
-		DrawText(text, pos.X, y, 0.5, 0.5, 255, 255, 255, 255, widthDefault, true)
-		y = y + 5
-	end
-	if DebugTool.config.testVectors then
-		text = "V1: " .. dump(enemy.V1)
-		DrawText(text, pos.X, y, 0.5, 0.5, 255, 255, 255, 255, widthDefault, true)
-		if text ~= "V1: Vector(0.00, 0.00)" and text ~= "V1: Vector(0.00, -0.00)" and text ~= "V1: Vector(-0.00, 0.00)" and text ~= "V1: Vector(-0.00, -0.00)" then
-			cursor.Color = Color(1, .5, 0, 1, 0, 0, 0)
-			cursor:Render(enemy.V1)
+local rY = 0
+
+local foo = {
+	[1] = function(enemy, x)
+		local text = "" .. math.floor(enemy.HitPoints*10)/10 .. "/" .. math.floor(enemy.MaxHitPoints*10)/10 ..
+		string.format(" (%.2f%%)", (math.max(enemy.HitPoints,0)/math.max(enemy.MaxHitPoints, 0.001))*100)
+		DrawText(text, x, rY, 0.5, 0.5, 255, 255, 0, 255, widthDefault, true)
+		return true
+	end,
+	[2] = function(enemy, x)
+		local text = DebugTool.enums.stateList[enemy:ToNPC().State+1]
+		if type(text) == "nil" then text = "unenumed "..tostring(enemy:ToNPC().State) end
+		text = "" .. text
+		DrawText(text, x, rY, 0.5, 0.5, 0, 255, 255, 255, widthDefault, true)
+		return true
+	end,
+	[3] = function(enemy, x)
+		local buffer = ""
+		local text = ""
+--[[
+		if frame ~= nil then
+			if enemy.StateFrame > frame then
+				buffer = "+"..enemy.StateFrame - frame
+			else
+				buffer = "-"..math.abs(enemy.StateFrame - frame)
+			end
+			text = "frame: "..enemy.StateFrame.." ("..buffer..")"
+		else
+			text = "frame: "..enemy.StateFrame
 		end
-		y = y + 5
-		text = "V2: " .. dump(enemy.V2)
-		DrawText(text, pos.X, y, 0.5, 0.5, 255, 255, 255, 255, widthDefault, true)
-		if text ~= "V2: Vector(0.00, 0.00)" and text ~= "V2: Vector(0.00, -0.00)" and text ~= "V2: Vector(-0.00, 0.00)" and text ~= "V2: Vector(-0.00, -0.00)" then
-			cursor.Color = Color(0, .5, 1, 1, 0, 0, 0)
-			cursor:Render(enemy.V2)
+]]--
+		text = "frame: "..enemy.StateFrame
+		DrawText(text, x, rY, 0.5, 0.5, 0, 255, 255, 255, widthDefault, true)
+		return true
+	end,
+	[4] = function(enemy, x)
+		local text = "" .. enemy.Type .. "." .. enemy.Variant .. "." .. enemy.SubType
+		DrawText(text, x, rY, 0.5, 0.5, 255, 255, 255, 255, widthDefault, true)
+		return true
+	end,
+	[5] = function(enemy, x)
+		local text = "spawner: " .. enemy.SpawnerType .. "." .. enemy.SpawnerVariant
+		if (text ~= "spawner: 0.0") then
+			DrawText(text, x, rY, 0.5, 0.5, 255, 255, 255, 255, widthDefault, true)
+			return true
+		end
+		return false
+	end,
+	[6] = function(enemy, x)
+		if DebugTool.config.testIVars then
+			local text = "I1: " .. dump(enemy.I1) .. "   I2: " .. dump(enemy.I2)
+			DrawText(text, x, rY, 0.5, 0.5, 255, 255, 255, 255, widthDefault, true)
+			return true
+		end
+		return false
+	end,
+	[7] = function(enemy, x)
+		if DebugTool.config.testVectors then
+			local text = "V1: " .. dump(enemy.V1)
+			DrawText(text, x, y, 0.5, 0.5, 255, 255, 255, 255, widthDefault, true)
+			if text ~= "V1: Vector(0.00, 0.00)" and text ~= "V1: Vector(0.00, -0.00)" and text ~= "V1: Vector(-0.00, 0.00)" and text ~= "V1: Vector(-0.00, -0.00)" then
+				cursor.Color = Color(1, .5, 0, 1, 0, 0, 0)
+				cursor:Render(enemy.V1)
+			end
+			rY = rY + 5
+			text = "V2: " .. dump(enemy.V2)
+			DrawText(text, x, y, 0.5, 0.5, 255, 255, 255, 255, widthDefault, true)
+			if text ~= "V2: Vector(0.00, 0.00)" and text ~= "V2: Vector(0.00, -0.00)" and text ~= "V2: Vector(-0.00, 0.00)" and text ~= "V2: Vector(-0.00, -0.00)" then
+				cursor.Color = Color(0, .5, 1, 1, 0, 0, 0)
+				cursor:Render(enemy.V2)
+			end
+			return true
+		end
+		return false
+	end,
+--[[
+	[8] = function(enemy, x, y)
+		local text = "mass: "..enemy.Mass
+		DrawText(text, x, rY, 0.5, 0.5, 255, 255, 255, 255, widthDefault, true)
+		return true
+	end,
+	[9] = function(enemy, x, y)
+		local text = "friction: "..enemy.Friction
+		DrawText(text, x, rY, 0.5, 0.5, 255, 255, 255, 255, widthDefault, true)
+		return true
+	end
+]]--
+}
+
+local function DebugEnemy(enemy, pos)
+	local yOffset = 5
+	rY = pos.Y - 57
+
+	for _,v in pairs(foo) do
+		if v(enemy, pos.X) then
+			rY = rY + yOffset
 		end
 	end
 end
@@ -305,3 +358,37 @@ debug:AddCallback(ModCallbacks.MC_POST_RENDER, function()
 		DebugEntities(entities, room)
 	end
 end)
+
+--Not officially used at this point, but here's a system to directly control some of an entity's params
+--[[
+
+local frame = nil
+local hp = nil
+local state = nil
+
+debug:AddCallback(ModCallbacks.MC_PRE_NPC_UPDATE, function(_, entity)
+	if type(frame) == "number" then
+		entity.StateFrame = frame
+	end
+	if type(hp) == "number" then
+		entity.HitPoints = hp
+		hp = nil
+	end
+	if state ~= nil then
+		entity.State = state
+	end
+end, EntityType.ENTITY_HUSH)
+
+debug:AddCallback(ModCallbacks.MC_EXECUTE_CMD, function(_, cmd, params)
+	cmd = string.lower(cmd)
+	if (string.match(cmd,"hush")) then
+		if cmd == "hush_frame" then
+			frame = tonumber(params)
+		elseif cmd == "hush_hp" then
+			hp = tonumber(params)
+		elseif cmd == "hush_state" then
+			state = params
+		end
+	end
+end)
+]]--

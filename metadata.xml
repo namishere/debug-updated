@@ -32,7 +32,7 @@ Here's a lit of the commands:
 - &quot;moddebug ivalues&quot;: Toggles enemy I1/I2 variable debugging
 - &quot;moddebug vectors&quot;: Toggles enemy V1/V2 vector debugging
 - &quot;moddebug toggle&quot;: Toggles debug display visibility</description>
-    <version>1.9</version>
+    <version>1.10</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
 </metadata>

@@ -181,8 +181,8 @@ local foo = {
 	end,
 	[2] = function(enemy, x)
 		local text = DebugTool.enums.stateList[enemy:ToNPC().State+1]
-		if type(text) == "nil" then text = "unenumed "..tostring(enemy:ToNPC().State) end
-		text = "" .. text
+		if type(text) == "nil" then text = "unenumed" end
+		text = text.." ("..enemy:ToNPC().State..")"
 		DrawText(text, x, rY, 0.5, 0.5, 0, 255, 255, 255, widthDefault, true)
 		return true
 	end,
